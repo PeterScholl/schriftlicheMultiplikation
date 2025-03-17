@@ -8,6 +8,8 @@ function generateProblem() {
     currentIndex = 0;
     inputCells = [];
     displayGrid(num1, num2);
+    // Initial erste Zelle hervorheben
+    highlightCurrentCell();
 }
 
 function displayGrid(n1, n2) {
@@ -24,7 +26,7 @@ function displayGrid(n1, n2) {
     container.innerHTML += `<div class='cell'>×</div>`;
     digits2.forEach(d => container.innerHTML += `<div class='cell'>${d}</div>`);
 
-    for (let i = 0; i < digits2.length; i++) {
+    for (let i = digits2.length - 1; i >= 0; i--) {
         let factor = parseInt(digits2[digits2.length - 1 - i]);
         let productStr = (factor * num1).toString();
         let startIdx = maxCols - productStr.length - i;
@@ -32,11 +34,13 @@ function displayGrid(n1, n2) {
         for (let j = 0; j < startIdx; j++) {
             container.innerHTML += `<div class='cell'></div>`;
         }
+        let rowInputs = [];
         for (let j = 0; j < productStr.length; j++) {
-            let id = `input-${inputCells.length}`;
+            let id = `input-${inputCells.length + rowInputs.length}`;
+            rowInputs.unshift(id); // Fügt ID an den Anfang der aktuellen Zeilenliste
             container.innerHTML += `<div id='${id}' class='cell input-cell'></div>`;
-            inputCells.push(id);
         }
+        inputCells.push(...rowInputs); // Nach der Schleife alle IDs zur Gesamtliste hinzufügen
         for (let j = 0; j < i; j++) {
             container.innerHTML += `<div class='cell'></div>`;
         }
@@ -45,13 +49,25 @@ function displayGrid(n1, n2) {
     for (let i = 0; i < maxCols - solution.length; i++) {
         container.innerHTML += `<div class='cell border-top'></div>`;
     }
+    let rowInputs = [];
     for (let i = 0; i < solution.length; i++) {
-        let id = `input-${inputCells.length}`;
-        container.innerHTML += `<div id='${id}' class='cell border-top input-cell'></div>`;
-        inputCells.push(id);
+        let id = `input-${inputCells.length + rowInputs.length}`;
+        rowInputs.unshift(id); // Fügt ID an den Anfang der aktuellen Zeilenliste
+        container.innerHTML += `<div id='${id}' class='cell input-cell'></div>`;
     }
+    inputCells.push(...rowInputs); // Nach der Schleife alle IDs zur Gesamtliste hinzufügen
 
     document.addEventListener("keydown", handleInput);
+}
+
+function highlightCurrentCell() {
+    document.querySelectorAll(".input-cell").forEach(cell => cell.classList.remove("highlight"));
+    if (currentIndex < inputCells.length) {
+        let input = document.getElementById(inputCells[currentIndex]);
+        if (input) {
+            input.classList.add("highlight");
+        }
+    }
 }
 
 function handleInput(event) {
@@ -60,8 +76,11 @@ function handleInput(event) {
         if (input) {
             input.textContent = event.key;
             currentIndex++;
+            highlightCurrentCell();
         }
     }
 }
+
+
 
 generateProblem();

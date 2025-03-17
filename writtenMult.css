@@ -22,7 +22,9 @@ body { font-family: Arial, sans-serif; text-align: center; }
 .input-cell { 
     background-color: lightyellow;
 }
-.highlight { background-color: lightblue; }
+.highlight {
+    border: 2px solid blue;
+}
 .carry { background-color: lightgray; }
 .line {
     border-bottom: 2px solid black;
