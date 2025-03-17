@@ -1,15 +1,15 @@
-let num1, num2, solution, rows, currentIndex = 0;
+let num1, num1Length = 3, num2, solution, rows, currentIndex = 0;
 let inputCells = [];
 
 function generateProblem() {
-    num1 = Math.floor(Math.random() * 900 + 100);
+    num1 = Math.floor(Math.random() * (10 ** num1Length - 10 ** (num1Length - 1)) + 10 ** (num1Length - 1));
     num2 = Math.floor(Math.random() * 90 + 10);
     solution = (num1 * num2).toString();
     currentIndex = 0;
     inputCells = [];
-    solutions = []; // Speichert zu jeder inputCell die Lösungsziffer
+    solutions = [];
+
     displayGrid(num1, num2);
-    // Initial erste Zelle hervorheben
     highlightCurrentCell();
 }
 
@@ -18,7 +18,7 @@ function displayGrid(n1, n2) {
     container.innerHTML = "";
     let digits1 = n1.toString().split("");
     let digits2 = n2.toString().split("");
-    let maxCols = digits1.length+1+digits2.length;
+    let maxCols = digits1.length + 1 + digits2.length;
     rows = digits2.length + 2;
     container.style.gridTemplateColumns = `repeat(${maxCols}, 40px)`;
     container.style.gridTemplateRows = `repeat(${rows}, 40px)`;
@@ -93,6 +93,13 @@ function handleInput(event) {
                 input.style.color = "red";
             }
         }
+    }
+    else if (event.key === "+" && num1Length < 15) {
+        num1Length++;
+        generateProblem();
+    } else if (event.key === "-" && num1Length > 2) {
+        num1Length--;
+        generateProblem();
     }
 }
 
