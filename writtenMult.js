@@ -80,13 +80,19 @@ function handleInput(event) {
     if (event.key >= "0" && event.key <= "9" && currentIndex < inputCells.length) {
         let input = document.getElementById(inputCells[currentIndex]);
         if (input) {
-            input.textContent = event.key;
-            console.log("Lösung:", solutions[currentIndex]);
-            currentIndex++;
-            highlightCurrentCell();
+            if (event.key === solutions[currentIndex]) {
+                input.textContent = event.key;
+                input.style.color = "black";
+                currentIndex++;
+                highlightCurrentCell();
+            } else {
+                input.textContent = event.key;
+                input.style.color = "red";
+            }
         }
     }
 }
+
 
 
 
