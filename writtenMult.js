@@ -2,7 +2,7 @@ let num1, num2, solution, rows, currentIndex = 0;
 let inputCells = [];
 
 function generateProblem() {
-    num1 = Math.floor(Math.random() * 90 + 10);
+    num1 = Math.floor(Math.random() * 900 + 100);
     num2 = Math.floor(Math.random() * 90 + 10);
     solution = (num1 * num2).toString();
     currentIndex = 0;
@@ -18,7 +18,7 @@ function displayGrid(n1, n2) {
     container.innerHTML = "";
     let digits1 = n1.toString().split("");
     let digits2 = n2.toString().split("");
-    let maxCols = 5;
+    let maxCols = digits1.length+1+digits2.length;
     rows = digits2.length + 2;
     container.style.gridTemplateColumns = `repeat(${maxCols}, 40px)`;
     container.style.gridTemplateRows = `repeat(${rows}, 40px)`;
@@ -85,6 +85,9 @@ function handleInput(event) {
                 input.style.color = "black";
                 currentIndex++;
                 highlightCurrentCell();
+                if (currentIndex === inputCells.length) {
+                    showModal("Geschafft!", () => generateProblem());
+                }
             } else {
                 input.textContent = event.key;
                 input.style.color = "red";
@@ -93,7 +96,18 @@ function handleInput(event) {
     }
 }
 
+// Funktion zum Anzeigen des Modal-Fensters
+function showModal(message, callback) {
+    let modal = document.createElement("div");
+    modal.textContent = message;
+    modal.className = "success-modal";
 
+    document.body.appendChild(modal);
 
+    setTimeout(() => {
+        document.body.removeChild(modal);
+        callback();
+    }, 1000);
+}
 
 generateProblem();
