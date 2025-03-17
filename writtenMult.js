@@ -117,4 +117,6 @@ function showModal(message, callback) {
     }, 1000);
 }
 
-generateProblem();
+document.addEventListener("DOMContentLoaded", () => {
+    generateProblem();
+});
