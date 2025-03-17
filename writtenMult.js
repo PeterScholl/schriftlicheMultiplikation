@@ -7,6 +7,7 @@ function generateProblem() {
     solution = (num1 * num2).toString();
     currentIndex = 0;
     inputCells = [];
+    solutions = []; // Speichert zu jeder inputCell die Lösungsziffer
     displayGrid(num1, num2);
     // Initial erste Zelle hervorheben
     highlightCurrentCell();
@@ -35,12 +36,15 @@ function displayGrid(n1, n2) {
             container.innerHTML += `<div class='cell'></div>`;
         }
         let rowInputs = [];
+        let rowSoluts = [];
         for (let j = 0; j < productStr.length; j++) {
             let id = `input-${inputCells.length + rowInputs.length}`;
             rowInputs.unshift(id); // Fügt ID an den Anfang der aktuellen Zeilenliste
+            rowSoluts.unshift(productStr[j]);
             container.innerHTML += `<div id='${id}' class='cell input-cell'></div>`;
         }
         inputCells.push(...rowInputs); // Nach der Schleife alle IDs zur Gesamtliste hinzufügen
+        solutions.push(...rowSoluts);
         for (let j = 0; j < i; j++) {
             container.innerHTML += `<div class='cell'></div>`;
         }
@@ -50,13 +54,15 @@ function displayGrid(n1, n2) {
         container.innerHTML += `<div class='cell border-top'></div>`;
     }
     let rowInputs = [];
+    let rowSoluts = [];
     for (let i = 0; i < solution.length; i++) {
         let id = `input-${inputCells.length + rowInputs.length}`;
         rowInputs.unshift(id); // Fügt ID an den Anfang der aktuellen Zeilenliste
+        rowSoluts.unshift(solution[i]);
         container.innerHTML += `<div id='${id}' class='cell input-cell'></div>`;
     }
     inputCells.push(...rowInputs); // Nach der Schleife alle IDs zur Gesamtliste hinzufügen
-
+    solutions.push(...rowSoluts);
     document.addEventListener("keydown", handleInput);
 }
 
@@ -75,6 +81,7 @@ function handleInput(event) {
         let input = document.getElementById(inputCells[currentIndex]);
         if (input) {
             input.textContent = event.key;
+            console.log("Lösung:", solutions[currentIndex]);
             currentIndex++;
             highlightCurrentCell();
         }
